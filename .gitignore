@@ -1,0 +1,8 @@
+.project
+.cproject
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+*.o
+lib/libAntTweakBar.so
+build
