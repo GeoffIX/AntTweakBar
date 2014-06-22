@@ -129,7 +129,7 @@ CTexFont *TwGenerateFont(const unsigned char *_Bitmap, int _BmWidth, int _BmHeig
             lmax = l;
     }
     // A little empty margin is added between chars to avoid artefact when antialiasing is on
-    const int MARGIN_X = 2; 
+    const int MARGIN_X = 2;
     const int MARGIN_Y = 2;
     lmax += 16*MARGIN_X;
     // - Second, build the texture
@@ -201,7 +201,7 @@ CTexFont *g_DefaultFixed1Font = NULL;
 // Small font
 const int FONT0_BM_W = 211;
 const int FONT0_BM_H = 84;
-static const unsigned char s_Font0[] = 
+static const unsigned char s_Font0[] =
 {
     127,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -805,10 +805,11 @@ static const unsigned char s_Font0[] =
 };
 
 
+#if 0
 // Normal font
 const int FONT1_BM_W = 253;
 const int FONT1_BM_H = 106;
-static const unsigned char s_Font1[] = 
+static const unsigned char s_Font1[] =
 {
     127,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -1702,11 +1703,12 @@ static const unsigned char s_Font1[] =
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
+#endif
 
 // Normal font anti-aliased
 const int FONT1AA_BM_W = 264;
 const int FONT1AA_BM_H = 106;
-static const unsigned char s_Font1AA[] = 
+static const unsigned char s_Font1AA[] =
 {
     127,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -2722,7 +2724,7 @@ static const unsigned char s_Font1AA[] =
 // Large font anti-aliased
 const int FONT2AA_BM_W = 276;
 const int FONT2AA_BM_H = 120;
-static const unsigned char s_Font2AA[] = 
+static const unsigned char s_Font2AA[] =
 {
     127,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

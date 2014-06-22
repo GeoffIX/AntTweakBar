@@ -105,8 +105,8 @@ inline double RadToDeg(double radian) { return radian * (180.0/DOUBLE_PI); }
 #ifdef _DEBUG
 static struct CTwVerif
 {
-    ~CTwVerif() 
-    { 
+    ~CTwVerif()
+    {
         if( g_TwMgr!=NULL )
             g_TwMgr->SetLastError("Tweak bar module has not been terminated properly: call TwTerminate()\n");
     }
@@ -122,7 +122,7 @@ void CColorExt::RGB2HLS()
     float fH = 0, fL = 0, fS = 0;
     ColorRGBToHLSf((float)R/255.0f, (float)G/255.0f, (float)B/255.0f, &fH, &fL, &fS);
     H = (int)fH;
-    if( H>=360 ) 
+    if( H>=360 )
         H -= 360;
     else if( H<0 )
         H += 360;
@@ -132,7 +132,7 @@ void CColorExt::RGB2HLS()
     else if( L>255 )
         L = 255;
     S = (int)(255.0f*fS + 0.5f);
-    if( S<0 ) 
+    if( S<0 )
         S = 0;
     else if( S>255 )
         S = 255;
@@ -143,17 +143,17 @@ void CColorExt::HLS2RGB()
     float fR = 0, fG = 0, fB = 0;
     ColorHLSToRGBf((float)H, (float)L/255.0f, (float)S/255.0f, &fR, &fG, &fB);
     R = (int)(255.0f*fR + 0.5f);
-    if( R<0 ) 
+    if( R<0 )
         R = 0;
     else if( R>255 )
         R = 255;
     G = (int)(255.0f*fG + 0.5f);
-    if( G<0 ) 
+    if( G<0 )
         G = 0;
     else if( G>255 )
         G = 255;
     B = (int)(255.0f*fB + 0.5f);
-    if( B<0 ) 
+    if( B<0 )
         B = 0;
     else if( B>255 )
         B = 255;
@@ -220,7 +220,7 @@ void ANT_CALL CColorExt::CopyVarFromExtCB(void *_VarValue, const void *_ExtValue
             ext->m_HasAlpha = false;
 
         // Synchronize HLS and RGB
-        if( _ExtMemberIndex>=0 && _ExtMemberIndex<=2 )
+        if( _ExtMemberIndex<=2 )
             ext->RGB2HLS();
         else if( _ExtMemberIndex>=3 && _ExtMemberIndex<=5 )
             ext->HLS2RGB();
@@ -326,7 +326,7 @@ void ANT_CALL CColorExt::CopyVarToExtCB(const void *_VarValue, void *_ExtValue, 
 
 void ANT_CALL CColorExt::SummaryCB(char *_SummaryString, size_t /*_SummaryMaxLength*/, const void *_ExtValue, void * /*_ClientData*/)
 {
-    // copy var 
+    // copy var
     CColorExt *ext = (CColorExt *)(_ExtValue);
     if( ext && ext->m_StructProxy && ext->m_StructProxy->m_StructData )
     {
@@ -783,8 +783,8 @@ void CQuaternionExt::CreateTypes()
 
         TwStructMember QuatExtMembers[] = { { "0", s_CustomType, 0, "" },
                                             { "1", s_CustomType, 0, "" },
-                                            { "2", s_CustomType, 0, "" }, 
-                                            { "3", s_CustomType, 0, "" }, 
+                                            { "2", s_CustomType, 0, "" },
+                                            { "3", s_CustomType, 0, "" },
                                             { "Quat X", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Qx), quatDef }, // copy of the source quaternion
                                             { "Quat Y", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Qy), quatDef },
                                             { "Quat Z", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Qz), quatDef },
@@ -797,7 +797,7 @@ void CQuaternionExt::CreateTypes()
                                             { "Dir X", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Dx), dirDef },      // copy of the source direction
                                             { "Dir Y", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Dy), dirDef },
                                             { "Dir Z", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Dz), dirDef } };
-        if( pass==0 ) 
+        if( pass==0 )
         {
             g_TwMgr->m_TypeQuat4F = TwDefineStructExt("QUAT4F", QuatExtMembers, sizeof(QuatExtMembers)/sizeof(QuatExtMembers[0]), 4*sizeof(float), sizeof(CQuaternionExt), CQuaternionExt::InitQuat4FCB, CQuaternionExt::CopyVarFromExtCB, CQuaternionExt::CopyVarToExtCB, CQuaternionExt::SummaryCB, CTwMgr::CStruct::s_PassProxyAsClientData, "A 4-floats-encoded quaternion");
             g_TwMgr->m_TypeQuat4D = TwDefineStructExt("QUAT4D", QuatExtMembers, sizeof(QuatExtMembers)/sizeof(QuatExtMembers[0]), 4*sizeof(double), sizeof(CQuaternionExt), CQuaternionExt::InitQuat4DCB, CQuaternionExt::CopyVarFromExtCB, CQuaternionExt::CopyVarToExtCB, CQuaternionExt::SummaryCB, CTwMgr::CStruct::s_PassProxyAsClientData, "A 4-doubles-encoded quaternion");
@@ -936,7 +936,7 @@ void CQuaternionExt::CopyToVar()
                     q[0] = (float)Qx; q[1] = (float)Qy; q[2] = (float)Qz; q[3] = (float)Qs;
                 }
             }
-            else 
+            else
             {
                 if( m_IsDir )
                 {
@@ -1041,7 +1041,7 @@ void CQuaternionExt::CreateArrow()
         s_ArrowTri[i].clear();
         s_ArrowNorm[i].clear();
     }
-    
+
     float x0, x1, y0, y1, z0, z1, a0, a1, nx, nn;
     for(i=0; i<SUBDIV; ++i)
     {
@@ -1325,7 +1325,7 @@ void CQuaternionExt::DrawCB(int w, int h, void *_ExtValue, void *_ClientData, Tw
     double normDir = sqrt(ext->m_Dir[0]*ext->m_Dir[0] + ext->m_Dir[1]*ext->m_Dir[1] + ext->m_Dir[2]*ext->m_Dir[2]);
     bool drawDir = ext->m_IsDir || (normDir>DOUBLE_EPS);
     color32 alpha = ext->m_Highlighted ? 0xffffffff : 0xb0ffffff;
-    
+
     // check if frame is right-handed
     ext->Permute(&kx, &ky, &kz, 1, 0, 0);
     double px[3] = { (double)kx, (double)ky, (double)kz };
@@ -1366,7 +1366,7 @@ void CQuaternionExt::DrawCB(int w, int h, void *_ExtValue, void *_ClientData, Tw
             ext->Permute(&x, &y, &z, kx, ky, kz);
             j = (z>0) ? 3-k : k;
 
-            assert( s_ArrowTriProj[j].size()==2*(s_ArrowTri[j].size()/3) && s_ArrowColLight[j].size()==s_ArrowTri[j].size()/3 && s_ArrowNorm[j].size()==s_ArrowTri[j].size() ); 
+            assert( s_ArrowTriProj[j].size()==2*(s_ArrowTri[j].size()/3) && s_ArrowColLight[j].size()==s_ArrowTri[j].size()/3 && s_ArrowNorm[j].size()==s_ArrowTri[j].size() );
             const int ntri = (int)s_ArrowTri[j].size()/3;
             const float *tri = &(s_ArrowTri[j][0]);
             const float *norm = &(s_ArrowNorm[j][0]);
@@ -1415,7 +1415,7 @@ void CQuaternionExt::DrawCB(int w, int h, void *_ExtValue, void *_ClientData, Tw
             {
                 kx = 1; ky = 0; kz = 0;
                 if( l==1 )
-                    Vec3RotZ(&kx, &ky, &kz); 
+                    Vec3RotZ(&kx, &ky, &kz);
                 else if( l==2 )
                     Vec3RotY(&kx, &ky, &kz);
                 ApplyQuat(&kx, &ky, &kz, kx, ky, kz, qx, qy, qz, qs);
@@ -1433,7 +1433,7 @@ void CQuaternionExt::DrawCB(int w, int h, void *_ExtValue, void *_ClientData, Tw
                         else
                             cone = false;
                     }
-                    assert( s_ArrowTriProj[j].size()==2*(s_ArrowTri[j].size()/3) && s_ArrowColLight[j].size()==s_ArrowTri[j].size()/3 && s_ArrowNorm[j].size()==s_ArrowTri[j].size() ); 
+                    assert( s_ArrowTriProj[j].size()==2*(s_ArrowTri[j].size()/3) && s_ArrowColLight[j].size()==s_ArrowTri[j].size()/3 && s_ArrowNorm[j].size()==s_ArrowTri[j].size() );
                     const int ntri = (int)s_ArrowTri[j].size()/3;
                     const float *tri = &(s_ArrowTri[j][0]);
                     const float *norm = &(s_ArrowNorm[j][0]);
@@ -1449,8 +1449,8 @@ void CQuaternionExt::DrawCB(int w, int h, void *_ExtValue, void *_ClientData, Tw
                         nx = norm[3*i+0]; ny = norm[3*i+1]; nz = norm[3*i+2];
                         if( l==1 )
                         {
-                            Vec3RotZ(&x, &y, &z); 
-                            Vec3RotZ(&nx, &ny, &nz); 
+                            Vec3RotZ(&x, &y, &z);
+                            Vec3RotZ(&nx, &ny, &nz);
                         }
                         else if( l==2 )
                         {
@@ -1690,7 +1690,7 @@ void CTwMgr::CClientStdString::FromLib(const char *libStr)
 #endif
 }
 
-std::string& CTwMgr::CClientStdString::ToClient() 
+std::string& CTwMgr::CClientStdString::ToClient()
 {
     assert( g_TwMgr!=NULL );
     if( g_TwMgr->m_ClientStdStringStructSize==sizeof(std::string)+sizeof(void *) )
@@ -1833,7 +1833,7 @@ static inline int TwFreeAsyncProcessing()
         {
             #if defined(ANT_WINDOWS)
                 Sleep(1); // milliseconds
-            #elif defined(ANT_UNIX) 
+            #elif defined(ANT_UNIX)
                 usleep(1000); // microseconds
             #endif
         }
@@ -1922,7 +1922,7 @@ int ANT_CALL TwInit(ETwGraphAPI _GraphAPI, void *_Device)
     int Res = TwCreateGraph(_GraphAPI);
     if( Res )
         Res = TwInitMgr();
-    
+
     if( !Res )
         TwTerminate();
 
@@ -1933,12 +1933,12 @@ int ANT_CALL TwInit(ETwGraphAPI _GraphAPI, void *_Device)
 
 int ANT_CALL TwSetLastError(const char *_StaticErrorMessage)
 {
-    if( g_TwMasterMgr!=0 ) 
+    if( g_TwMasterMgr!=0 )
     {
         g_TwMasterMgr->SetLastError(_StaticErrorMessage);
         return 1;
     }
-    else 
+    else
         return 0;
 }
 
@@ -1982,7 +1982,7 @@ int ANT_CALL TwTerminate()
                 g_TwMgr->m_Graph = NULL;
         }
 
-        if (g_TwMgr != g_TwMasterMgr) 
+        if (g_TwMgr != g_TwMasterMgr)
         {
             delete g_TwMgr;
             g_TwMgr = NULL;
@@ -2029,7 +2029,7 @@ int ANT_CALL TwSetCurrentWindow(int wndID)
     }
 
     if (wndID != g_TwMgr->m_WndID)
-    { 
+    {
         CTwWndMap::iterator foundWnd = g_Wnds.find(wndID);
         if (foundWnd == g_Wnds.end())
         {
@@ -2038,13 +2038,13 @@ int ANT_CALL TwSetCurrentWindow(int wndID)
             g_Wnds[wndID] = g_TwMgr;
             return TwInitMgr();
         }
-        else 
+        else
         {
             g_TwMgr = foundWnd->second;
             return 1;
         }
     }
-    else 
+    else
         return 1;
 }
 
@@ -2093,8 +2093,8 @@ int ANT_CALL TwDraw()
     double CurrTime = g_TwMgr->m_Timer.GetTime();
     double RepeatDT = CurrTime - g_TwMgr->m_LastMousePressedTime;
     double DrawDT = CurrTime - g_TwMgr->m_LastDrawTime;
-    if(    RepeatDT>2.0*g_TwMgr->m_RepeatMousePressedDelay 
-        || DrawDT>2.0*g_TwMgr->m_RepeatMousePressedDelay 
+    if(    RepeatDT>2.0*g_TwMgr->m_RepeatMousePressedDelay
+        || DrawDT>2.0*g_TwMgr->m_RepeatMousePressedDelay
         || abs(g_TwMgr->m_LastMousePressedPosition[0]-g_TwMgr->m_LastMouseX)>4
         || abs(g_TwMgr->m_LastMousePressedPosition[1]-g_TwMgr->m_LastMouseY)>4 )
     {
@@ -2245,7 +2245,7 @@ int ANT_CALL TwWindowSize(int _Width, int _Height)
 
     for( std::vector<TwBar*>::iterator it=g_TwMgr->m_Bars.begin(); it!=g_TwMgr->m_Bars.end(); ++it )
         (*it)->NotUpToDate();
-    
+
     return 1;
 }
 
@@ -2300,8 +2300,8 @@ CTwMgr::CTwMgr(ETwGraphAPI _GraphAPI, void *_Device, int _WndID)
     m_ButtonAlign = BUTTON_ALIGN_RIGHT;
     m_OverlapContent = false;
     m_Terminating = false;
-    
-    m_CursorsCreated = false;   
+
+    m_CursorsCreated = false;
     #if defined(ANT_UNIX)
         m_CurrentXDisplay = NULL;
         m_CurrentXWindow = 0;
@@ -2418,7 +2418,7 @@ int CTwMgr::SetAttrib(int _AttribID, const char *_Value)
                     m_FontResizable = false; // for now fixed font is not resizable
                 }
                 return 1;
-            } 
+            }
             else if( _stricmp(_Value, "default")==0 )
             {
                 if( m_CurrentFont!=g_DefaultSmallFont && m_CurrentFont!=g_DefaultNormalFont && m_CurrentFont!=g_DefaultLargeFont )
@@ -2669,7 +2669,7 @@ ERetType CTwMgr::GetAttrib(int _AttribID, std::vector<double>& outDoubles, std::
     case MGR_FONT_STYLE:
         if( m_CurrentFont==g_DefaultFixed1Font )
             outString << "fixed";
-        else 
+        else
             outString << "default";
         return RET_STRING;
     case MGR_ICON_POS:
@@ -2706,7 +2706,7 @@ ERetType CTwMgr::GetAttrib(int _AttribID, std::vector<double>& outDoubles, std::
         {
             bool contained = m_Contained;
             /*
-            if( contained ) 
+            if( contained )
             {
                 vector<TwBar*>::iterator barIt;
                 for( barIt=g_TwMgr->m_Bars.begin(); barIt!=g_TwMgr->m_Bars.end(); ++barIt )
@@ -2844,7 +2844,7 @@ void CTwMgr::SetFont(const CTexFont *_Font, bool _ResizeBars)
                     m_Bars[i]->m_PosX += (3*(fh-_Font->m_CharHeight))/2;
                     m_Bars[i]->m_PosY += (fh-_Font->m_CharHeight)/2;
                 }
-                if( m_Bars[i]->m_Resizable ) 
+                if( m_Bars[i]->m_Resizable )
                 {
                     m_Bars[i]->m_Width = (m_Bars[i]->m_Width*_Font->m_CharHeight)/fh;
                     m_Bars[i]->m_Height = (m_Bars[i]->m_Height*_Font->m_CharHeight)/fh;
@@ -2923,7 +2923,7 @@ void CTwMgr::SetLastError(const char *_ErrorMessage)    // _ErrorMessage must be
 
 const char *CTwMgr::GetLastError()
 {
-    if (this != g_TwMasterMgr) 
+    if (this != g_TwMasterMgr)
     {
         // route to master
         return g_TwMasterMgr->GetLastError();
@@ -3083,7 +3083,7 @@ int ANT_CALL TwDeleteBar(TwBar *_Bar)
     g_TwMgr->m_MinOccupied.erase(itm);
     // erase _Bar order
     vector<int>::iterator BarOrderIt = g_TwMgr->m_Order.end();
-    for(vector<int>::iterator it=g_TwMgr->m_Order.begin(); it!=g_TwMgr->m_Order.end(); ++it ) 
+    for(vector<int>::iterator it=g_TwMgr->m_Order.begin(); it!=g_TwMgr->m_Order.end(); ++it )
         if( (*it)==i )
             BarOrderIt = it;
         else if( (*it)>i )
@@ -3112,7 +3112,7 @@ int ANT_CALL TwDeleteAllBars()
     TwFreeAsyncDrawing(); // For multi-thread savety
 
     int n = 0;
-    if( g_TwMgr->m_Terminating || g_TwMgr->m_HelpBar==NULL ) 
+    if( g_TwMgr->m_Terminating || g_TwMgr->m_HelpBar==NULL )
     {
         for( size_t i=0; i<g_TwMgr->m_Bars.size(); ++i )
             if( g_TwMgr->m_Bars[i]!=NULL )
@@ -3406,9 +3406,9 @@ TwBar * ANT_CALL TwGetBarByIndex(int index)
         return NULL;  // not initialized
     }
 
-    if( index>=0 && index<(int)g_TwMgr->m_Bars.size() ) 
+    if( index>=0 && index<(int)g_TwMgr->m_Bars.size() )
         return g_TwMgr->m_Bars[index];
-    else 
+    else
     {
         g_TwMgr->SetLastError(g_ErrOutOfRange);
         return NULL;
@@ -3493,9 +3493,9 @@ int ANT_CALL TwGetParam(TwBar *bar, const char *varName, const char *paramName, 
         return 0;
     }
 
-    if( bar==NULL ) 
+    if( bar==NULL )
         bar = TW_GLOBAL_BAR;
-    else 
+    else
     {
         vector<TwBar*>::iterator barIt;
         int i = 0;
@@ -3516,7 +3516,7 @@ int ANT_CALL TwGetParam(TwBar *bar, const char *varName, const char *paramName, 
         var = bar->Find(varName, &varParent, &varIndex);
         if( var==NULL )
         {
-            _snprintf(g_ErrParse, sizeof(g_ErrParse), "Unknown var '%s/%s'", 
+            _snprintf(g_ErrParse, sizeof(g_ErrParse), "Unknown var '%s/%s'",
                       (bar==TW_GLOBAL_BAR) ? "GLOBAL" : bar->m_Name.c_str(), varName);
             g_ErrParse[sizeof(g_ErrParse)-1] = '\0';
             g_TwMgr->SetLastError(g_ErrParse);
@@ -3542,9 +3542,9 @@ int ANT_CALL TwGetParam(TwBar *bar, const char *varName, const char *paramName, 
             retType = RET_ERROR;
         }
 
-        if( retType==RET_DOUBLE ) 
+        if( retType==RET_DOUBLE )
         {
-            switch( paramValueType ) 
+            switch( paramValueType )
             {
             case TW_PARAM_INT32:
                 for( i=0; i<valDblCount; i++ )
@@ -3567,13 +3567,13 @@ int ANT_CALL TwGetParam(TwBar *bar, const char *varName, const char *paramName, 
                 if( i>outValueMaxCount-1 )
                     i = outValueMaxCount-1;
                 (static_cast<char *>(outValues))[i] = '\0';
-                return 1; // always returns 1 for CSTRING 
+                return 1; // always returns 1 for CSTRING
             default:
                 g_TwMgr->SetLastError(g_ErrBadParam); // Unknown param value type
                 retType = RET_ERROR;
             }
         }
-        else if( retType==RET_STRING ) 
+        else if( retType==RET_STRING )
         {
             if( paramValueType == TW_PARAM_CSTRING )
             {
@@ -3582,9 +3582,9 @@ int ANT_CALL TwGetParam(TwBar *bar, const char *varName, const char *paramName, 
                 if( i>outValueMaxCount-1 )
                     i = outValueMaxCount-1;
                 (static_cast<char *>(outValues))[i] = '\0';
-                return 1; // always returns 1 for CSTRING 
+                return 1; // always returns 1 for CSTRING
             }
-            else 
+            else
             {
                 g_TwMgr->SetLastError(g_ErrBadType); // string cannot be converted to int or double
                 retType = RET_ERROR;
@@ -3595,8 +3595,8 @@ int ANT_CALL TwGetParam(TwBar *bar, const char *varName, const char *paramName, 
         {
             bool errMsg = (g_TwMgr->CheckLastError()!=NULL && strlen(g_TwMgr->CheckLastError())>0 && PrevLastErrorPtr!=g_TwMgr->CheckLastError());
             _snprintf(g_ErrParse, sizeof(g_ErrParse), "Unable to get param '%s%s%s %s' %s%s",
-                      (bar==TW_GLOBAL_BAR) ? "GLOBAL" : bar->m_Name.c_str(), (var!=NULL) ? "/" : "", 
-                      (var!=NULL) ? varName : "", paramName, errMsg ? " : " : "", 
+                      (bar==TW_GLOBAL_BAR) ? "GLOBAL" : bar->m_Name.c_str(), (var!=NULL) ? "/" : "",
+                      (var!=NULL) ? varName : "", paramName, errMsg ? " : " : "",
                       errMsg ? g_TwMgr->CheckLastError() : "");
             g_ErrParse[sizeof(g_ErrParse)-1] = '\0';
             g_TwMgr->SetLastError(g_ErrParse);
@@ -3605,8 +3605,8 @@ int ANT_CALL TwGetParam(TwBar *bar, const char *varName, const char *paramName, 
     }
     else
     {
-        _snprintf(g_ErrParse, sizeof(g_ErrParse), "Unknown param '%s%s%s %s'", 
-                  (bar==TW_GLOBAL_BAR) ? "GLOBAL" : bar->m_Name.c_str(), 
+        _snprintf(g_ErrParse, sizeof(g_ErrParse), "Unknown param '%s%s%s %s'",
+                  (bar==TW_GLOBAL_BAR) ? "GLOBAL" : bar->m_Name.c_str(),
                   (var!=NULL) ? "/" : "", (var!=NULL) ? varName : "", paramName);
         g_ErrParse[sizeof(g_ErrParse)-1] = '\0';
         g_TwMgr->SetLastError(g_ErrParse);
@@ -3637,7 +3637,7 @@ int ANT_CALL TwSetParam(TwBar *bar, const char *varName, const char *paramName, 
 
     TwFreeAsyncDrawing(); // For multi-thread savety
 
-    if( bar==NULL ) 
+    if( bar==NULL )
         bar = TW_GLOBAL_BAR;
     else
     {
@@ -3660,7 +3660,7 @@ int ANT_CALL TwSetParam(TwBar *bar, const char *varName, const char *paramName, 
         var = bar->Find(varName, &varParent, &varIndex);
         if( var==NULL )
         {
-            _snprintf(g_ErrParse, sizeof(g_ErrParse), "Unknown var '%s/%s'", 
+            _snprintf(g_ErrParse, sizeof(g_ErrParse), "Unknown var '%s/%s'",
                       (bar==TW_GLOBAL_BAR) ? "GLOBAL" : bar->m_Name.c_str(), varName);
             g_ErrParse[sizeof(g_ErrParse)-1] = '\0';
             g_TwMgr->SetLastError(g_ErrParse);
@@ -3674,11 +3674,11 @@ int ANT_CALL TwSetParam(TwBar *bar, const char *varName, const char *paramName, 
     {
         int ret = 0;
         const char *PrevLastErrorPtr = g_TwMgr->CheckLastError();
-        if( hasValue ) 
+        if( hasValue )
         {
             std::ostringstream valuesStr;
             unsigned int i;
-            switch( paramValueType ) 
+            switch( paramValueType )
             {
             case TW_PARAM_INT32:
                 for( i=0; i<inValueCount; i++ )
@@ -3726,18 +3726,18 @@ int ANT_CALL TwSetParam(TwBar *bar, const char *varName, const char *paramName, 
         {
             bool errMsg = (g_TwMgr->CheckLastError()!=NULL && strlen(g_TwMgr->CheckLastError())>0 && PrevLastErrorPtr!=g_TwMgr->CheckLastError());
             _snprintf(g_ErrParse, sizeof(g_ErrParse), "Unable to set param '%s%s%s %s' %s%s",
-                      (bar==TW_GLOBAL_BAR) ? "GLOBAL" : bar->m_Name.c_str(), (var!=NULL) ? "/" : "", 
-                      (var!=NULL) ? varName : "", paramName, errMsg ? " : " : "", 
+                      (bar==TW_GLOBAL_BAR) ? "GLOBAL" : bar->m_Name.c_str(), (var!=NULL) ? "/" : "",
+                      (var!=NULL) ? varName : "", paramName, errMsg ? " : " : "",
                       errMsg ? g_TwMgr->CheckLastError() : "");
             g_ErrParse[sizeof(g_ErrParse)-1] = '\0';
             g_TwMgr->SetLastError(g_ErrParse);
         }
         return ret;
-    } 
+    }
     else
     {
-        _snprintf(g_ErrParse, sizeof(g_ErrParse), "Unknown param '%s%s%s %s'", 
-                  (bar==TW_GLOBAL_BAR) ? "GLOBAL" : bar->m_Name.c_str(), 
+        _snprintf(g_ErrParse, sizeof(g_ErrParse), "Unknown param '%s%s%s %s'",
+                  (bar==TW_GLOBAL_BAR) ? "GLOBAL" : bar->m_Name.c_str(),
                   (var!=NULL) ? "/" : "", (var!=NULL) ? varName : "", paramName);
         g_ErrParse[sizeof(g_ErrParse)-1] = '\0';
         g_TwMgr->SetLastError(g_ErrParse);
@@ -3751,12 +3751,12 @@ static int s_PassProxy = 0;
 void *CTwMgr::CStruct::s_PassProxyAsClientData = &s_PassProxy;  // special tag
 
 CTwMgr::CStructProxy::CStructProxy()
-{ 
-    memset(this, 0, sizeof(*this)); 
+{
+    memset(this, 0, sizeof(*this));
 }
 
-CTwMgr::CStructProxy::~CStructProxy() 
-{ 
+CTwMgr::CStructProxy::~CStructProxy()
+{
     if( m_StructData!=NULL && m_DeleteStructData )
     {
         //if( m_StructExtData==NULL && g_TwMgr!=NULL && m_Type>=TW_TYPE_STRUCT_BASE && m_Type<TW_TYPE_STRUCT_BASE+(int)g_TwMgr->m_Structs.size() )
@@ -3860,14 +3860,14 @@ void CTwMgr::RestoreCDStdString(const std::vector<CCDStdStringRecord>& _Records)
         memcpy(_Records[i].m_DataPtr, _Records[i].m_PrevValue, m_ClientStdStringStructSize);
 }
 
-CTwMgr::CMemberProxy::CMemberProxy() 
-{ 
-    memset(this, 0, sizeof(*this)); 
+CTwMgr::CMemberProxy::CMemberProxy()
+{
+    memset(this, 0, sizeof(*this));
 }
 
-CTwMgr::CMemberProxy::~CMemberProxy() 
-{ 
-    memset(this, 0, sizeof(*this)); 
+CTwMgr::CMemberProxy::~CMemberProxy()
+{
+    memset(this, 0, sizeof(*this));
 }
 
 void ANT_CALL CTwMgr::CMemberProxy::SetCB(const void *_Value, void *_ClientData)
@@ -3956,7 +3956,7 @@ void ANT_CALL CTwMgr::CCDStdString::SetCB(const void *_Value, void *_ClientData)
     }
     if( CDStdString->m_ClientSetCallback==NULL )
     {
-        if( g_TwMgr->m_CopyStdStringToClient && CDStdString->m_ClientStdStringPtr!=NULL ) 
+        if( g_TwMgr->m_CopyStdStringToClient && CDStdString->m_ClientStdStringPtr!=NULL )
         {
             CTwMgr::CClientStdString clientSrcStr; // convert VC++ Release/Debug std::string
             clientSrcStr.FromLib(SrcStr);
@@ -4085,7 +4085,7 @@ static int AddVar(TwBar *_Bar, const char *_Name, ETwType _Type, void *_VarPtr, 
         if( g_TwMgr->m_ClientStdStringStructSize==0 )
             g_TwMgr->m_ClientStdStringStructSize = clientStdStringStructSize;
         int diff = abs((int)g_TwMgr->m_ClientStdStringStructSize - (int)sizeof(std::string));
-        if( g_TwMgr->m_ClientStdStringStructSize!=clientStdStringStructSize || g_TwMgr->m_ClientStdStringStructSize==0 
+        if( g_TwMgr->m_ClientStdStringStructSize!=clientStdStringStructSize || g_TwMgr->m_ClientStdStringStructSize==0
             || (diff!=0 && diff!=sizeof(void*)))
         {
             g_TwMgr->SetLastError(g_ErrStdString);
@@ -4114,9 +4114,9 @@ static int AddVar(TwBar *_Bar, const char *_Name, ETwType _Type, void *_VarPtr, 
         return AddVar(_Bar, _Name, TW_TYPE_CDSTDSTRING, NULL, _ReadOnly, SetCB, GetCB, NULL, &CDStdString, _Def);
     }
     else if(    (_Type>TW_TYPE_UNDEF && _Type<TW_TYPE_STRUCT_BASE)
-             || (_Type>=TW_TYPE_ENUM_BASE && _Type<TW_TYPE_ENUM_BASE+(int)g_TwMgr->m_Enums.size()) 
+             || (_Type>=TW_TYPE_ENUM_BASE && _Type<TW_TYPE_ENUM_BASE+(int)g_TwMgr->m_Enums.size())
              || (_Type>TW_TYPE_CSSTRING_BASE && _Type<=TW_TYPE_CSSTRING_MAX)
-             || _Type==TW_TYPE_CDSTDSTRING 
+             || _Type==TW_TYPE_CDSTDSTRING
              || IsCustomType(_Type) ) // (_Type>=TW_TYPE_CUSTOM_BASE && _Type<TW_TYPE_CUSTOM_BASE+(int)g_TwMgr->m_Customs.size()) )
     {
         CTwVarAtom *Var = new CTwVarAtom;
@@ -4601,7 +4601,7 @@ int BarVarSetAttrib(CTwBar *_Bar, CTwVar *_Var, CTwVarGroup *_VarParent, int _Va
         return _Var->SetAttrib(_AttribID, _Value, _Bar, _VarParent, _VarIndex);
     // don't make _Bar not-up-to-date here, should be done in SetAttrib if needed to avoid too frequent refreshs
 }
- 
+
 
 ERetType BarVarGetAttrib(CTwBar *_Bar, CTwVar *_Var, CTwVarGroup *_VarParent, int _VarIndex, int _AttribID, std::vector<double>& outDoubles, std::ostringstream& outString)
 {
@@ -4704,7 +4704,7 @@ int ANT_CALL TwDefine(const char *_Def)
     CTwVar *Var = NULL;
     CTwVarGroup *VarParent = NULL;
     int VarIndex = -1;
-    int p; 
+    int p;
 
     Cur = _Def;
     while( *Cur!='\0' )
@@ -4754,7 +4754,7 @@ int ANT_CALL TwDefine(const char *_Def)
             if( AttribID<=0 )
             {
                 _snprintf(g_ErrParse, sizeof(g_ErrParse), "Parsing error in def string: Unknown attribute%s [%-16s...]", ErrorPosition(MultiLine, Line, Column).c_str(), Token.c_str());
-                g_ErrParse[sizeof(g_ErrParse)-1] = '\0';    
+                g_ErrParse[sizeof(g_ErrParse)-1] = '\0';
                 g_TwMgr->SetLastError(g_ErrParse);
                 return 0;
             }
@@ -4865,7 +4865,7 @@ TwType ANT_CALL TwDefineEnum(const char *_Name, const TwEnumVal *_EnumValues, un
             }
     if( enumIndex==g_TwMgr->m_Enums.size() )
         g_TwMgr->m_Enums.push_back(CTwMgr::CEnum());
-    assert( enumIndex>=0 && enumIndex<g_TwMgr->m_Enums.size() );
+    assert( enumIndex<g_TwMgr->m_Enums.size() );
     CTwMgr::CEnum& e = g_TwMgr->m_Enums[enumIndex];
     if( _Name!=NULL && strlen(_Name)>0 )
         e.m_Name = _Name;
@@ -4887,7 +4887,7 @@ TwType ANT_CALL TwDefineEnum(const char *_Name, const TwEnumVal *_EnumValues, un
 
 TwType TW_CALL TwDefineEnumFromString(const char *_Name, const char *_EnumString)
 {
-    if (_EnumString == NULL) 
+    if (_EnumString == NULL)
         return TwDefineEnum(_Name, NULL, 0);
 
     // split enumString
@@ -4926,7 +4926,7 @@ void ANT_CALL CTwMgr::CStruct::DefaultSummary(char *_SummaryString, size_t _Summ
     size_t structIndex = (size_t)(_ClientData);
     if(    g_TwMgr && _SummaryString && _SummaryMaxLength>2
         && varGroup && static_cast<const CTwVar *>(varGroup)->IsGroup()
-        && structIndex>=0 && structIndex<=g_TwMgr->m_Structs.size() )
+        && structIndex<=g_TwMgr->m_Structs.size() )
     {
         // return g_TwMgr->m_Structs[structIndex].m_Name.c_str();
         CTwMgr::CStruct& s = g_TwMgr->m_Structs[structIndex];
@@ -5095,7 +5095,7 @@ TwType ANT_CALL TwDefineStructExt(const char *_StructName, const TwStructMember 
         s.m_IsExt = true;
         s.m_ClientStructSize = _StructSize;
         s.m_StructExtInitCallback = _StructExtInitCallback;
-        s.m_CopyVarFromExtCallback = _CopyVarFromExtCallback;   
+        s.m_CopyVarFromExtCallback = _CopyVarFromExtCallback;
         s.m_CopyVarToExtCallback = _CopyVarToExtCallback;
         s.m_ExtClientData = _ClientData;
         if( _Help!=NULL )
@@ -5114,14 +5114,13 @@ bool TwGetKeyCode(int *_Code, int *_Modif, const char *_String)
     *_Modif = TW_KMOD_NONE;
     *_Code = 0;
     size_t Start = strlen(_String)-1;
-    if( Start<0 )
-        return false;
+
     while( Start>0 && _String[Start-1]!='+' )
         --Start;
     while( _String[Start]==' ' || _String[Start]=='\t' )
         ++Start;
     char *CodeStr = _strdup(_String+Start);
-    for( size_t i=strlen(CodeStr)-1; i>=0; ++i )
+    for( size_t i=strlen(CodeStr)-1;; ++i )
         if( CodeStr[i]==' ' || CodeStr[i]=='\t' )
             CodeStr[i] = '\0';
         else
@@ -5138,7 +5137,7 @@ bool TwGetKeyCode(int *_Code, int *_Modif, const char *_String)
     if( strstr(_String, "ALTGR")!=NULL || strstr(_String, "altgr")!=NULL )
         ((void)(0));    // *_Modif |= TW_KMOD_ALTGR;
     else // ALT and ALTGR are exclusive
-        if( strstr(_String, "ALT")!=NULL || strstr(_String, "alt")!=NULL )  
+        if( strstr(_String, "ALT")!=NULL || strstr(_String, "alt")!=NULL )
             *_Modif |= TW_KMOD_ALT;
     */
     char *up = _strdup(_String);
@@ -5155,7 +5154,7 @@ bool TwGetKeyCode(int *_Code, int *_Modif, const char *_String)
     if( strstr(up, "ALTGR")!=NULL )
         ((void)(0));    // *_Modif |= TW_KMOD_ALTGR;
     else // ALT and ALTGR are exclusive
-        if( strstr(up, "ALT")!=NULL )   
+        if( strstr(up, "ALT")!=NULL )
             *_Modif |= TW_KMOD_ALT;
     free(up);
 
@@ -5404,7 +5403,7 @@ bool TwGetKeyString(std::string *_String, int _Code, int _Modif)
 }
 
 //  ---------------------------------------------------------------------------
- 
+
 const int        TW_MOUSE_NOMOTION = -1;
 ETwMouseAction   TW_MOUSE_MOTION = (ETwMouseAction)(-2);
 ETwMouseAction   TW_MOUSE_WHEEL = (ETwMouseAction)(-3);
@@ -5564,7 +5563,7 @@ static int TranslateKey(int _Key, int _Modifiers)
         //_Modifiers &= ~TW_KMOD_SHIFT; // remove shift modifier
         bool Num = (!(_Modifiers&TW_KMOD_SHIFT) && (_Modifiers&0x1000)); // 0x1000 is SDL's KMOD_NUM
         if( _Key==266 )          // SDLK_KP_PERIOD
-            _Key = Num ? '.' : TW_KEY_DELETE;
+            _Key = Num ? '.' : (char)TW_KEY_DELETE;
         else if( _Key==267 )     // SDLK_KP_DIVIDE
             _Key = '/';
         else if( _Key==268 )     // SDLK_KP_MULTIPLY
@@ -5668,7 +5667,7 @@ static int KeyPressed(int _Key, int _Modifiers, bool _TestOnly)
         for( i=((int)g_TwMgr->m_Bars.size())-1; i>=0 && !Handled; --i )
         {
             Bar = g_TwMgr->m_Bars[g_TwMgr->m_Order[i]];
-            if( Bar!=NULL && Bar->m_Visible && !Bar->IsMinimized() 
+            if( Bar!=NULL && Bar->m_Visible && !Bar->IsMinimized()
                 && ( (MouseX>=Bar->m_PosX && MouseX<Bar->m_PosX+Bar->m_Width && MouseY>=Bar->m_PosY && MouseY<Bar->m_PosY+Bar->m_Height)
                      || Bar==PopupBar) )
             {
@@ -5716,7 +5715,7 @@ static int KeyPressed(int _Key, int _Modifiers, bool _TestOnly)
                     Handled = Bar->KeyPressed(_Key, _Modifiers);
             }
         }
-        
+
         if( g_TwMgr->m_HelpBar!=NULL && g_TwMgr->m_Graph && !_TestOnly )
         {
             string Str;
@@ -6268,7 +6267,7 @@ void CTwMgr::CreateCursors()
         if( m_RotoCursors[cur]==NULL )
             m_RotoCursors[cur] = ::LoadCursor(NULL ,MAKEINTRESOURCE(IDC_CROSS));
     }
-    
+
     m_CursorsCreated = true;
 }
 
@@ -6293,7 +6292,7 @@ CTwMgr::CCursor CTwMgr::PixmapCursor(int _CurIdx)
 
     unsigned char ands[32*4];
     unsigned char xors[32*4];
-    for( y=0; y<32*4; ++y ) 
+    for( y=0; y<32*4; ++y )
     {
         ands[y] = ~mask[y];
         xors[y] = pict[y];
@@ -6301,7 +6300,7 @@ CTwMgr::CCursor CTwMgr::PixmapCursor(int _CurIdx)
 
     HMODULE hdll = GetModuleHandle(ANT_TWEAK_BAR_DLL);
     CCursor cursor = ::CreateCursor(hdll, g_CurHot[_CurIdx][0], g_CurHot[_CurIdx][1], 32, 32, ands, xors);
- 
+
     return cursor;
 }
 
@@ -6351,8 +6350,8 @@ CTwMgr::CCursor CTwMgr::PixmapCursor(int _CurIdx)
 {
     unsigned char *data;
     int x,y;
-    
-    NSBitmapImageRep *imgr = [[NSBitmapImageRep alloc] 
+
+    NSBitmapImageRep *imgr = [[NSBitmapImageRep alloc]
                               initWithBitmapDataPlanes: NULL
                               pixelsWide: 32
                               pixelsHigh: 32
@@ -6391,7 +6390,7 @@ void CTwMgr::CreateCursors()
 {
     if (m_CursorsCreated)
         return;
-    
+
     m_CursorArrow        = [[NSCursor arrowCursor] retain];
     m_CursorMove         = [[NSCursor crosshairCursor] retain];
     m_CursorWE           = [[NSCursor resizeLeftRightCursor] retain];
@@ -6432,7 +6431,7 @@ void CTwMgr::FreeCursors()
     [m_CursorNo release];
     [m_CursorIBeam release];
     for( int i=0; i<NB_ROTO_CURSORS; ++i )
-        [m_RotoCursors[i] release]; 
+        [m_RotoCursors[i] release];
     [m_CursorCenter release];
     [m_CursorPoint release];
     m_CursorsCreated = false;
@@ -6452,7 +6451,7 @@ void CTwMgr::SetCursor(CTwMgr::CCursor _Cursor)
 
 static XErrorHandler s_PrevErrorHandler = NULL;
 
-static int InactiveErrorHandler(Display *display, XErrorEvent *err)
+static int InactiveErrorHandler(Display */*display*/, XErrorEvent *err)
 {
     fprintf(stderr, "Ignoring Xlib error: error code %d request code %d\n", err->error_code, err->request_code);
     // No exit!
@@ -6480,11 +6479,11 @@ static void RestoreXErrors()
 }
 
 CTwMgr::CCursor CTwMgr::PixmapCursor(int _CurIdx)
-{ 
+{
     if( !m_CurrentXDisplay || !m_CurrentXWindow )
         return XC_left_ptr;
-        
-    IgnoreXErrors();    
+
+    IgnoreXErrors();
 
     XColor black, white, exact;
     Colormap colmap = DefaultColormap(m_CurrentXDisplay, DefaultScreen(m_CurrentXDisplay));
@@ -6503,15 +6502,15 @@ CTwMgr::CCursor CTwMgr::PixmapCursor(int _CurIdx)
             mask[y] |= (((unsigned int)(g_CurMask[_CurIdx][x+y*32]))<<x);
             pict[y] |= (((unsigned int)(g_CurPict[_CurIdx][x+y*32]))<<x);
         }
-    }       
+    }
     Pixmap maskPix = XCreateBitmapFromData(m_CurrentXDisplay, m_CurrentXWindow, (char*)mask, 32, 32);
     Pixmap pictPix = XCreateBitmapFromData(m_CurrentXDisplay, m_CurrentXWindow, (char*)pict, 32, 32);
     Cursor cursor = XCreatePixmapCursor(m_CurrentXDisplay, pictPix, maskPix, &white, &black, g_CurHot[_CurIdx][0], g_CurHot[_CurIdx][1]);
     XFreePixmap(m_CurrentXDisplay, maskPix);
     XFreePixmap(m_CurrentXDisplay, pictPix);
-    
+
     RestoreXErrors();
-    
+
     if( cursor!=0 )
         return cursor;
     else
@@ -6545,14 +6544,14 @@ void CTwMgr::CreateCursors()
     m_CursorCenter  = PixmapCursor(0);
     m_CursorPoint   = PixmapCursor(1);
     m_CursorsCreated = true;
-    
+
     RestoreXErrors();
 }
 
 void CTwMgr::FreeCursors()
 {
     IgnoreXErrors();
-    
+
     XFreeCursor(m_CurrentXDisplay, m_CursorArrow);
     XFreeCursor(m_CurrentXDisplay, m_CursorMove);
     XFreeCursor(m_CurrentXDisplay, m_CursorWE);
@@ -6560,20 +6559,20 @@ void CTwMgr::FreeCursors()
     XFreeCursor(m_CurrentXDisplay, m_CursorTopRight);
     XFreeCursor(m_CurrentXDisplay, m_CursorTopLeft);
     XFreeCursor(m_CurrentXDisplay, m_CursorBottomRight);
-    XFreeCursor(m_CurrentXDisplay, m_CursorBottomLeft); 
+    XFreeCursor(m_CurrentXDisplay, m_CursorBottomLeft);
     XFreeCursor(m_CurrentXDisplay, m_CursorHelp);
     XFreeCursor(m_CurrentXDisplay, m_CursorHand);
     XFreeCursor(m_CurrentXDisplay, m_CursorCross);
     XFreeCursor(m_CurrentXDisplay, m_CursorUpArrow);
-    XFreeCursor(m_CurrentXDisplay, m_CursorNo); 
+    XFreeCursor(m_CurrentXDisplay, m_CursorNo);
     for( int i=0; i<NB_ROTO_CURSORS; ++i )
         XFreeCursor(m_CurrentXDisplay, m_RotoCursors[i]);
     XFreeCursor(m_CurrentXDisplay, m_CursorCenter);
-    XFreeCursor(m_CurrentXDisplay, m_CursorPoint);          
+    XFreeCursor(m_CurrentXDisplay, m_CursorPoint);
 
     m_CursorsCreated = false;
-    
-    RestoreXErrors();   
+
+    RestoreXErrors();
 }
 
 void CTwMgr::SetCursor(CTwMgr::CCursor _Cursor)
@@ -6654,7 +6653,7 @@ void ANT_CALL TwCopyStdStringToLibrary(std::string& destLibraryString, const std
             Init = false; // has already been initialized
     assert( !Init );
     //  ::new(&destLibraryString) std::string;
-    
+
     // copy string
     destLibraryString = srcClientString;
     */
@@ -6741,7 +6740,7 @@ bool CRect::Subtract(const vector<CRect>& _Rects, vector<CRect>& _OutRects) cons
     {
         vector<CRect> TmpRects;
         Subtract(_Rects[0], _OutRects);
-        
+
         for( i=1; i<NbRects; i++)
         {
             for( j=0; j<_OutRects.size(); j++ )
